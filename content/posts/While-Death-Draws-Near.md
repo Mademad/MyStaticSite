@@ -8,14 +8,13 @@ description: "While Death Draws Near"
 keywords: "Poem,poem,Poetry,poetry,SEO"
 draft: false
 includeToc: true
-
 ---
 	
 I had eyes but failed to see \
 What was precious to me \
 I had ears but failed to hear \
 The words of the ones who were dear 
-
+<!--more-->
 I had a tongue but failed to say \
 The thing that I needed to relay \
 I had a heart but failed to feel \
