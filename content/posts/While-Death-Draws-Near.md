@@ -10,24 +10,23 @@ draft: false
 includeToc: true
 
 ---
-# While Death Draws Near
+	
+I had eyes but failed to see \
+What was precious to me \
+I had ears but failed to hear \
+The words of the ones who were dear 
 
-I had eyes but failed to see
-What was precious to me
-I had ears but failed to hear
-The words of the ones who were dear
-
-I had a tongue but failed to say
-The thing that I needed to relay
-I had a heart but failed to feel
+I had a tongue but failed to say \
+The thing that I needed to relay \
+I had a heart but failed to feel \
 Anything that could've been real
 
-Empty and alone I am here
-While death draws near
-Thoughts of the life I could've lived
-Crashes into what I had believed
+Empty and alone I am here \
+While death draws near \
+Thoughts of the life I could've lived \
+Crashes into what I had believed 
 
-Can I change before I die
-Or will I tell yet another lie
-Will Death set aside his duty
+Can I change before I die \
+Or will I tell yet another lie \
+Will Death set aside his duty \
 For me to enjoy life's new found beauty
