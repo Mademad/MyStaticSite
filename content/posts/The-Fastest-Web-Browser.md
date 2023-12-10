@@ -1,5 +1,5 @@
 ---
-title: "The Best Web Browser"
+title: "The Fastest Web Browser"
 date: 2023-10-19T15:06:27+03:30
 author: Madness
 tags: ["Linux", "Windows", "Network", "Internet"]
