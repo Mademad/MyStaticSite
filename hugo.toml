@@ -1,6 +1,6 @@
 baseURL = 'https://berembagh.tk/'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = 'MadeMad Site'
 
 theme = 'poison'
 
