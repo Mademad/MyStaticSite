@@ -12,7 +12,7 @@ description: "My WinUtil Script"
 keywords: "windows, Windows, script, Script, SEO"
 draft: false
 hideToc: true
-featuredImage: /images/thumbnails/MyWinUtil-thumb.png
+featuredImage: /images/thumbnails/MyWinUtil-thumb.jpg
 ---
 This is the Script I Wrote Mostly For Windows 10 and 11
 
