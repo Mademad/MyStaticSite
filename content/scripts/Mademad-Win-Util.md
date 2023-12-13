@@ -1,19 +1,22 @@
 ---
 title: "My Win Util"
-date: 2023-12-10T22:20:27+03:30
+#url: "/winutil/"
+date: 2023-12-10
 author: Mademad
-tags: ["Windows", "Script"]
-categories: ["Windows"]
+categories:
+    - Windows
+tags:
+    - Script
+    - Tweaks
 description: "My WinUtil Script"
 keywords: "windows, Windows, script, Script, SEO"
 draft: false
-includeToc: true
-
+hideToc: true
 ---
 
 This is the Script I Wrote Mostly For Windows 10 and 11
 
-![WinUtil](/images/MyWinUtil.png "WinUtil Screenshot") 
+![WinUtil](/images/MyWinUtil.png "WinUtil Screenshot")
 
 <!--more-->
 
@@ -26,5 +29,6 @@ Options:
 - Uninstall OneDrive
 - Uninstall Edge
 
+---
 [Download Script](/files/MademadWinUtil.bat "MademadWinUtil.bat")
-
+---

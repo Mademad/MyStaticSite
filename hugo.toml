@@ -16,5 +16,9 @@ theme = 'poison'
     menu = [
         {Name = "Posts", URL = "/posts/", HasChildren = true, Limit = 5},
         {Name = "Scripts", URL = "/scripts/", HasChildren = "true", Limit = "1"},
+        {Name = "Categories", URL = "/categories/", HasChildren = false},
         {Name = "Tags", URL = "/tags/", HasChildren = false},
     ]
+
+    rss_icon = true
+    rss_section = "posts"

@@ -1,13 +1,17 @@
 ---
 title: "The Fastest Web Browser"
-date: 2023-10-19T15:06:27+03:30
+date: 2023-10-19
 author: Madness
-tags: ["Linux", "Windows", "Network", "Internet"]
-categories: ["Linux", "Windows", "Network", "Internet"]
+categories:
+    - Windows
+    - Linux
+tags:
+    - Browser
+    - Internet
 description: "Thanks to Chris Titus"
 keywords: "Linux,linux,windows,Windows,Network,network,SEO"
 draft: false
-includeToc: true
+hideToc: true
 
 ---
 
