@@ -13,6 +13,8 @@ includeToc: true
 
 This is the Script I Wrote Mostly For Windows 10 and 11
 
+![WinUtil](/images/MyWinUtil.png "WinUtil Screenshot") 
+
 <!--more-->
 
 Options:
@@ -26,4 +28,3 @@ Options:
 
 [Download Script](/files/MademadWinUtil.bat "MademadWinUtil.bat")
 
-![Thorium](/images/MyWinUtil.png "Thorium Browser Screenshot")

@@ -14,11 +14,10 @@ includeToc: true
 Thorium Browser is Faster and Better than other Chromium-based Browsers,\
 It uses less Resources of the System but over all theme and style of its GUI\
 is the same as Google Chrome.
+![Thorium](/images/Thorium-Browser.jpg "Thorium Browser Screenshot")
 
 <!--more-->
 
 `It is available for Windows, Linux, MacOS, Android and Raspberry Pi`
 
 [Thorium Browser](https://thorium.rocks "Website")
-
-[![Thorium](/images/Thorium-Browser.jpg "Thorium Browser Screenshot")](/images/Thorium-Browser.jpg)
