@@ -1,6 +1,6 @@
 ---
 title: "My Win Util"
-#url: "/winutil/"
+url: "/winutil/"
 date: 2023-12-10
 author: Mademad
 categories:
@@ -12,13 +12,13 @@ description: "My WinUtil Script"
 keywords: "windows, Windows, script, Script, SEO"
 draft: false
 hideToc: true
+featuredImage: /images/thumbnails/MyWinUtil-thumb.png
 ---
-
 This is the Script I Wrote Mostly For Windows 10 and 11
 
-![WinUtil](/images/MyWinUtil.png "WinUtil Screenshot")
-
 <!--more-->
+
+![WinUtil](/images/MyWinUtil.png "WinUtil Screenshot")
 
 Options:
 

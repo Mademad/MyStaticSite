@@ -16,4 +16,6 @@ description: ".Name"
 keywords: "Linux,linux,windows,Windows,Network,network,SEO,seo"
 draft: false
 hideToc: true
+#featuredImage: /images/test.png
 ---
+####
