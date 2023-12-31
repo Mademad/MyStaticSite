@@ -1,4 +1,4 @@
-<# :: MadnessWinUtil Version 1.3.1
+<# :: MademadWinUtil Version 1.1
 @echo off
 :GETPERM
 	set vbs=%temp%\getadmin.vbs
