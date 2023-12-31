@@ -39,8 +39,10 @@
 		if errorlevel 2 exit /B 0
 		:DWU
 		reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v NoAutoUpdate /t REG_DWORD /d 1 /f
-		sc stop wuauserv && sc config wuauserv start="DisabledServices" error=ignore
-		sc stop BITS && sc config BITS start="DisabledServices" error=ignore
+		net stop wuauserv
+		reg add "HKLM\SYSTEM\CurrentControlSet\Services\wuauserv" /v "Start" /t REG_DWORD /d 4 /f
+		net stop BITS
+		reg add "HKLM\SYSTEM\CurrentControlSet\Services\BITS" /v "Start" /t REG_DWORD /d 4 /f
 		set DisableWUTasks=%DisableWUTasks% "Microsoft\Windows\WindowsUpdate\Automatic App Update" "Microsoft\Windows\WindowsUpdate\Scheduled Start"
 		set DisableWUTasks=%DisableWUTasks% "Microsoft\Windows\WindowsUpdate\sih" "Microsoft\Windows\WindowsUpdate\sihboot" "Microsoft\Windows\WindowsUpdate\sihpostreboot"
 		(for %%a in (%DisableWUTasks%) do ( schtasks /change /disable /tn %%a ))
@@ -51,6 +53,7 @@
 		Choice /m "Note: Disable Windows Defender - Your System Will Restart, Do You Wish To Continue?"
 		if errorlevel 2 exit /B 0
 		:DWD
+		PowerShell -c ^"Invoke-Expression ('^& {' + (get-content -raw '%~f0') + '; DisableWinDefender} ') "
 		set HSMWD=HKLM\SOFTWARE\Microsoft\Windows Defender
 		set HSPWD=HKLM\SOFTWARE\Policies\Microsoft\Windows Defender
 		set DWDREG=			"%HSMWD%\Features"~"TamperProtection"~"0" "%HSMWD%\Real-Time Protection"~"DisableRealtimeMonitoring"~"1" "%HSPWD%"~"DisableAntiSpyware"~"1"
@@ -58,7 +61,6 @@
 		set DWDREG=%DWDREG% "%HSPWD%\Real-Time Protection"~"DisableRealtimeMonitoring"~"1" "%HSPWD%\Real-Time Protection"~"DisableScanOnRealtimeEnable"~"1"
 		set DWDREG=%DWDREG% "HKLM\SOFTWARE\Microsoft\Security Center\Svc"~"AntiSpywareOverride"~"1"
 		for %%A in (%DWDREG%) do ( for /f "tokens=1,2,3 delims=~" %%C in ("%%A") do ( reg add %%C /v %%D /t REG_DWORD /d %%E /f ))
-		PowerShell -c ^"Invoke-Expression ('^& {' + (get-content -raw '%~f0') + '; DisableWinDefender} ') "
 		exit /B 0
 	:TWEAKS
 		if exist "%vbs%" ( del "%vbs%" )
@@ -98,39 +100,39 @@
 			if errorlevel 2 exit /B 0
 			:NPSC
 			echo Setting Services To Manual, Delayed and Disabled
-			set SVCs=		"ALG"~"3" "AppIDSvc"~"3" "AppMgmt"~"3" "AppReadiness"~"3" "AppXSvc"~"3" "Appinfo"~"3" "AxInstSV"~"3" "BDESVC"~"3" "BTAGService"~"3"
-			set SVCs=%SVCs% "BcastDVRUserService"~"3" "BluetoothUserService"~"3" "Browser"~"3" "CDPSvc"~"3" "COMSysApp"~"3" "CaptureService"~"3" "CertPropSvc"~"3"
-			set SVCs=%SVCs% "ClipSVC"~"3" "ConsentUxUserSvc"~"3" "CredentialEnrollmentManagerUserSvc"~"3" "CscService"~"3" "DcpSvc"~"3" "DevQueryBroker"~"3"
-			set SVCs=%SVCs% "DeviceAssociationBrokerSvc"~"3" "DeviceAssociationService"~"3" "DeviceInstall"~"3" "DevicePickerUserSvc"~"3" "DevicesFlowUserSvc"~"3"
-			set SVCs=%SVCs% "DisplayEnhancementService"~"3" "DmEnrollmentSvc"~"3" "DsSvc"~"3" "DsmSvc"~"3" "EFS"~"3" "EapHost"~"3" "EntAppSvc"~"3" "FDResPub"~"3"
-			set SVCs=%SVCs% "Fax"~"3" "FrameServer"~"3" "FrameServerMonitor"~"3" "GraphicsPerfSvc"~"3" "HomeGroupListener"~"3" "HomeGroupProvider"~"3" "HvHost"~"3"
-			set SVCs=%SVCs% "IEEtwCollectorService"~"3" "IKEEXT"~"3" "InstallService"~"3" "InventorySvc"~"3" "IpxlatCfgSvc"~"3" "KtmRm"~"3" "LicenseManager"~"3"
-			set SVCs=%SVCs% "LxpSvc"~"3" "MSDTC"~"3" "MSiSCSI"~"3" "McpManagementService"~"3" "MessagingService"~"3" "MicrosoftEdgeElevationService"~"3"
-			set SVCs=%SVCs% "MixedRealityOpenXRSvc"~"3" "MsKeyboardFilter"~"3" "NPSMSv"~"3" "NaturalAuthentication"~"3" "NcaSvc"~"3" "NcbService"~"3" "NcdAutoSetup"~"3"
-			set SVCs=%SVCs% "NetSetupSvc"~"3" "Netlogon"~"3" "Netman"~"3" "NgcCtnrSvc"~"3" "NgcSvc"~"3" "NlaSvc"~"3" "P9RdrService"~"3" "PNRPAutoReg"~"3" "PNRPsvc"~"3"
-			set SVCs=%SVCs% "PcaSvc"~"3" "PeerDistSvc"~"3" "PenService"~"3" "PerfHost"~"3" "PhoneSvc"~"3" "PimIndexMaintenanceSvc"~"3" "PlugPlay"~"3" "PolicyAgent"~"3"
-			set SVCs=%SVCs% "PrintNotify"~"3" "PrintWorkflowUserSvc"~"3" "PushToInstall"~"3" "QWAVE"~"3" "RasAuto"~"3" "RasMan"~"3" "RetailDemo"~"3" "RmSvc"~"3"
-			set SVCs=%SVCs% "RpcLocator"~"3" "SCPolicySvc"~"3" "SCardSvr"~"3" "SDRSVC"~"3" "SEMgrSvc"~"3" "SNMPTrap"~"3" "SSDPSRV"~"3" "ScDeviceEnum"~"3"
-			set SVCs=%SVCs% "SecurityHealthService"~"3" "Sense"~"3" "SensorDataService"~"3" "SensorService"~"3" "SensrSvc"~"3" "SessionEnv"~"3" "SharedAccess"~"3"
-			set SVCs=%SVCs% "SharedRealitySvc"~"3" "SmsRouter"~"3" "SstpSvc"~"3" "StateRepository"~"3" "StiSvc"~"3" "StorSvc"~"3" "TabletInputService"~"3" "TapiSrv"~"3"
-			set SVCs=%SVCs% "TextInputManagementService"~"3" "TieringEngineService"~"3" "TimeBroker"~"3" "TimeBrokerSvc"~"3" "TokenBroker"~"3" "TroubleshootingSvc"~"3"
-			set SVCs=%SVCs% "TrustedInstaller"~"3" "UI0Detect"~"3" "UdkUserSvc"~"3" "UmRdpService"~"3" "UnistoreSvc"~"3" "UserDataSvc"~"3" "UsoSvc"~"3" "VSS"~"3"
-			set SVCs=%SVCs% "VacSvc"~"3" "W32Time"~"3" "WEPHOSTSVC"~"3" "WFDSConMgrSvc"~"3" "WMPNetworkSvc"~"3" "WManSvc"~"3" "WPDBusEnum"~"3" "WSService"~"3"
-			set SVCs=%SVCs% "WaaSMedicSvc"~"3" "WalletService"~"3" "WarpJITSvc"~"3" "WbioSrvc"~"3" "WcsPlugInService"~"3" "WdNisSvc"~"3" "WdiServiceHost"~"3"
-			set SVCs=%SVCs% "WdiSystemHost"~"3" "WebClient"~"3" "Wecsvc"~"3" "WerSvc"~"3" "WiaRpc"~"3" "WinHttpAutoProxySvc"~"3" "WinRM"~"3" "WpcMonSvc"~"3"
-			set SVCs=%SVCs% "WpnService"~"3" "WwanSvc"~"3" "XblAuthManager"~"3" "XblGameSave"~"3" "XboxGipSvc"~"3" "XboxNetApiSvc"~"3" "autotimesvc"~"3" "bthserv"~"3"
-			set SVCs=%SVCs% "camsvc"~"3" "cbdhsvc"~"3" "cloudidsvc"~"3" "dcsvc"~"3" "defragsvc"~"3" "diagnosticshub.standardcollector.service"~"3" "diagsvc"~"3"
-			set SVCs=%SVCs% "dmwappushservice"~"3" "dot3svc"~"3" "edgeupdate"~"3" "edgeupdatem"~"3" "embeddedmode"~"3" "fdPHost"~"3" "fhsvc"~"3" "hidserv"~"3"
-			set SVCs=%SVCs% "icssvc"~"3" "lfsvc"~"3" "lltdsvc"~"3" "lmhosts"~"3" "msiserver"~"3" "netprofm"~"3" "p2pimsvc"~"3" "p2psvc"~"3" "perceptionsimulation"~"3"
-			set SVCs=%SVCs% "pla"~"3" "seclogon"~"3" "smphost"~"3" "spectrum"~"3" "svsvc"~"3" "swprv"~"3" "upnphost"~"3" "vds"~"3" "vm3dservice"~"3"
-			set SVCs=%SVCs% "vmicguestinterface"~"3" "vmicheartbeat"~"3" "vmickvpexchange"~"3" "vmicrdv"~"3" "vmicshutdown"~"3" "vmictimesync"~"3" "vmicvmsession"~"3"
-			set SVCs=%SVCs% "vmicvss"~"3" "vmvss"~"3" "wbengine"~"3" "wcncsvc"~"3" "webthreatdefsvc"~"3" "wercplsupport"~"3" "wisvc"~"3" "wlidsvc"~"3" "wlpasvc"~"3"
-			set SVCs=%SVCs% "wmiApSrv"~"3" "workfolderssvc"~"3" "wudfsvc"~"3" "AJRouter"~"4" "AppVClient"~"4" "AssignedAccessManagerSvc"~"4" "DiagTrack"~"4"
-			set SVCs=%SVCs% "DialogBlockingService"~"4" "NetTcpPortSharing"~"4" "RemoteAccess"~"4" "RemoteRegistry"~"4" "UevAgentService"~"4" "shpamsvc"~"4" "ssh-agent"~"4"
-			set SVCs=%SVCs% "tzautoupdate"~"4" "uhssvc"~"4" "SysMain"~"4" "WSearch"~"4" "DoSvc"~"2" "MapsBroker"~"2" "sppsvc"~"2" "wscsvc"~"2"
+			set SVCs=		ALG~"3" AppIDSvc~"3" AppMgmt~"3" AppReadiness~"3" AppXSvc~"3" Appinfo~"3" AxInstSV~"3" BDESVC~"3" BTAGService~"3"
+			set SVCs=%SVCs% BcastDVRUserService~"3" BluetoothUserService~"3" Browser~"3" CDPSvc~"3" COMSysApp~"3" CaptureService~"3" CertPropSvc~"3"
+			set SVCs=%SVCs% ClipSVC~"3" ConsentUxUserSvc~"3" CredentialEnrollmentManagerUserSvc~"3" CscService~"3" DcpSvc~"3" DevQueryBroker~"3"
+			set SVCs=%SVCs% DeviceAssociationBrokerSvc~"3" DeviceAssociationService~"3" DeviceInstall~"3" DevicePickerUserSvc~"3" DevicesFlowUserSvc~"3"
+			set SVCs=%SVCs% DisplayEnhancementService~"3" DmEnrollmentSvc~"3" DsSvc~"3" DsmSvc~"3" EFS~"3" EapHost~"3" EntAppSvc~"3" FDResPub~"3"
+			set SVCs=%SVCs% Fax~"3" FrameServer~"3" FrameServerMonitor~"3" GraphicsPerfSvc~"3" HomeGroupListener~"3" HomeGroupProvider~"3" HvHost~"3"
+			set SVCs=%SVCs% IEEtwCollectorService~"3" IKEEXT~"3" InstallService~"3" InventorySvc~"3" IpxlatCfgSvc~"3" KtmRm~"3" LicenseManager~"3"
+			set SVCs=%SVCs% LxpSvc~"3" MSDTC~"3" MSiSCSI~"3" McpManagementService~"3" MessagingService~"3" MicrosoftEdgeElevationService~"3"
+			set SVCs=%SVCs% MixedRealityOpenXRSvc~"3" MsKeyboardFilter~"3" NPSMSv~"3" NaturalAuthentication~"3" NcaSvc~"3" NcbService~"3" NcdAutoSetup~"3"
+			set SVCs=%SVCs% NetSetupSvc~"3" Netlogon~"3" Netman~"3" NgcCtnrSvc~"3" NgcSvc~"3" NlaSvc~"3" P9RdrService~"3" PNRPAutoReg~"3" PNRPsvc~"3"
+			set SVCs=%SVCs% PcaSvc~"3" PeerDistSvc~"3" PenService~"3" PerfHost~"3" PhoneSvc~"3" PimIndexMaintenanceSvc~"3" PlugPlay~"3" PolicyAgent~"3"
+			set SVCs=%SVCs% PrintNotify~"3" PrintWorkflowUserSvc~"3" PushToInstall~"3" QWAVE~"3" RasAuto~"3" RasMan~"3" RetailDemo~"3" RmSvc~"3"
+			set SVCs=%SVCs% RpcLocator~"3" SCPolicySvc~"3" SCardSvr~"3" SDRSVC~"3" SEMgrSvc~"3" SNMPTrap~"3" SSDPSRV~"3" ScDeviceEnum~"3"
+			set SVCs=%SVCs% SecurityHealthService~"3" Sense~"3" SensorDataService~"3" SensorService~"3" SensrSvc~"3" SessionEnv~"3" SharedAccess~"3"
+			set SVCs=%SVCs% SharedRealitySvc~"3" SmsRouter~"3" SstpSvc~"3" StateRepository~"3" StiSvc~"3" StorSvc~"3" TabletInputService~"3" TapiSrv~"3"
+			set SVCs=%SVCs% TextInputManagementService~"3" TieringEngineService~"3" TimeBroker~"3" TimeBrokerSvc~"3" TokenBroker~"3" TroubleshootingSvc~"3"
+			set SVCs=%SVCs% TrustedInstaller~"3" UI0Detect~"3" UdkUserSvc~"3" UmRdpService~"3" UnistoreSvc~"3" UserDataSvc~"3" UsoSvc~"3" VSS~"3"
+			set SVCs=%SVCs% VacSvc~"3" W32Time~"3" WEPHOSTSVC~"3" WFDSConMgrSvc~"3" WMPNetworkSvc~"3" WManSvc~"3" WPDBusEnum~"3" WSService~"3"
+			set SVCs=%SVCs% WaaSMedicSvc~"3" WalletService~"3" WarpJITSvc~"3" WbioSrvc~"3" WcsPlugInService~"3" WdNisSvc~"3" WdiServiceHost~"3"
+			set SVCs=%SVCs% WdiSystemHost~"3" WebClient~"3" Wecsvc~"3" WerSvc~"3" WiaRpc~"3" WinHttpAutoProxySvc~"3" WinRM~"3" WpcMonSvc~"3"
+			set SVCs=%SVCs% WpnService~"3" WwanSvc~"3" XblAuthManager~"3" XblGameSave~"3" XboxGipSvc~"3" XboxNetApiSvc~"3" autotimesvc~"3" bthserv~"3"
+			set SVCs=%SVCs% camsvc~"3" cbdhsvc~"3" cloudidsvc~"3" dcsvc~"3" defragsvc~"3" diagnosticshub.standardcollector.service~"3" diagsvc~"3"
+			set SVCs=%SVCs% dmwappushservice~"3" dot3svc~"3" edgeupdate~"3" edgeupdatem~"3" embeddedmode~"3" fdPHost~"3" fhsvc~"3" hidserv~"3"
+			set SVCs=%SVCs% icssvc~"3" lfsvc~"3" lltdsvc~"3" lmhosts~"3" msiserver~"3" netprofm~"3" p2pimsvc~"3" p2psvc~"3" perceptionsimulation~"3"
+			set SVCs=%SVCs% pla~"3" seclogon~"3" smphost~"3" spectrum~"3" svsvc~"3" swprv~"3" upnphost~"3" vds~"3" vm3dservice~"3"
+			set SVCs=%SVCs% vmicguestinterface~"3" vmicheartbeat~"3" vmickvpexchange~"3" vmicrdv~"3" vmicshutdown~"3" vmictimesync~"3" vmicvmsession~"3"
+			set SVCs=%SVCs% vmicvss~"3" vmvss~"3" wbengine~"3" wcncsvc~"3" webthreatdefsvc~"3" wercplsupport~"3" wisvc~"3" wlidsvc~"3" wlpasvc~"3"
+			set SVCs=%SVCs% wmiApSrv~"3" workfolderssvc~"3" wudfsvc~"3" AJRouter~"4" AppVClient~"4" AssignedAccessManagerSvc~"4" DiagTrack~"4"
+			set SVCs=%SVCs% DialogBlockingService~"4" NetTcpPortSharing~"4" RemoteAccess~"4" RemoteRegistry~"4" UevAgentService~"4" shpamsvc~"4" ssh-agent~"4"
+			set SVCs=%SVCs% tzautoupdate~"4" uhssvc~"4" SysMain~"4" WSearch~"4" DoSvc~"2" MapsBroker~"2" sppsvc~"2" wscsvc~"2"
 			(for %%A in (%SVCs%) do (for /f "tokens=1,2 delims=~" %%B in ("%%A") do (
 				echo %%B
-				reg add "HKLM\SYSTEM\CurrentControlSet\SVCs\%%B" /v "Start" /t REG_DWORD /d %%C /f
+				reg add "HKLM\SYSTEM\CurrentControlSet\Services\%%B" /v "Start" /t REG_DWORD /d %%C /f
 			)))
 			if not %TweakVar% == 1 ( pause )
 			exit /B 0
