@@ -355,27 +355,23 @@
 			PowerShell -c ^"Invoke-Expression ('^& {' + (get-content -raw '%~f0') + '; UninstallEdge} ') "
 			exit /B 0
 	:All
-		echo Will Disable Windows Update and Defender
 		echo Will Run All Tweaks
 		echo Will Remove AppX Packages (Partially Debloat Windows)
 		echo Will Uninstall Microsoft OneDrive
 		echo Will Uninstall Microsoft Edge
 		Choice /m "Are You Sure You Want to Proceed?"
 		if errorlevel 2 exit /B 0
-		echo Disabling Windows Defender
-		call :DWD
-		echo Starting Tweaks
-		call :NPSC
-		call :NPTK
-		call :PTMFG
-		call :PTFU
-		call :DisUAC
 		echo Starting Debloat
 		call :DBWDW
 		call :DBWUO
 		call :DBWUE
-		echo Disabling Windows Updates
-		call :DWU
+		echo Starting Tweaks
+		set TweakVar=1
+		call :NPSC
+		call :NPTK
+		call :PTMFG
+		call :DisUAC
+		call :PTFU
 		exit /B 0
 :TIMER
 		ping localhost -n 2 >nul
